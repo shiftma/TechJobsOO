@@ -15,6 +15,19 @@ namespace TechJobs.ViewModels
         [Display(Name = "Employer")]
         public int EmployerID { get; set; }
 
+        [Required]
+        [Display(Name = "Location")]
+        public int LocationID { get; set; }
+
+        [Required]
+        [Display(Name = "Skill")]
+        public int SkillID { get; set; }
+
+        [Required]
+        [Display(Name = "Position Type")]
+        public int TypeID { get; set; }
+
+
         // TODO #3 - Included other fields needed to create a job,
         // with correct validation attributes and display names.
 
@@ -36,9 +49,49 @@ namespace TechJobs.ViewModels
                 });
             }
 
+            foreach (Location field in jobData.Locations.ToList())
+            {
+                Locations.Add(new SelectListItem
+                {
+                    Value = field.ID.ToString(),
+                    Text = field.Value
+                });
+            }
+
+            foreach (CoreCompetency field in jobData.CoreCompetencies.ToList())
+            {
+                CoreCompetencies.Add(new SelectListItem
+                {
+                    Value = field.ID.ToString(),
+                    Text = field.Value
+                });
+            }
+
+            foreach (PositionType field in jobData.PositionTypes.ToList())
+            {
+                PositionTypes.Add(new SelectListItem
+                {
+                    Value = field.ID.ToString(),
+                    Text = field.Value
+                });
+            }
             // TODO #4 - populate the other List<SelectListItem> 
             // collections needed in the view
 
+        }
+        public Job CreateJob(NewJobViewModel newJobViewModel)
+        {
+            JobData jobData = JobData.GetInstance();
+            Job newJob = new Job
+            {
+                Name = newJobViewModel.Name,
+                Employer = jobData.Employers.Find(newJobViewModel.EmployerID),
+                Location = jobData.Locations.Find(newJobViewModel.LocationID),
+                CoreCompetency = jobData.CoreCompetencies.Find(newJobViewModel.SkillID),
+                PositionType = jobData.PositionTypes.Find(newJobViewModel.TypeID)
+            };
+
+            return newJob;
         }
     }
 }
