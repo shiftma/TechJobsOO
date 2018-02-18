@@ -36,9 +36,11 @@ namespace TechJobs.Controllers
         {
             if (ModelState.IsValid)
             {
-                jobData.Jobs.Add(newJobViewModel.CreateJob(newJobViewModel));
+                var b = newJobViewModel.CreateJob(newJobViewModel);
+                jobData.Jobs.Add(b);
+                
 // new Job obj ID?
-                return Redirect("/Job?id=" + newJobViewModel.EmployerID);
+                return Redirect("/Job?id=" + b.ID);
             }
             // TODO #6 - Validate the ViewModel and if valid, create a 
             // new Job and add it to the JobData data store. Then
